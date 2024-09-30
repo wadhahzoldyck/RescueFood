@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\BeneficiaireController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,5 @@ Route::get('/restaurant', [RestaurantController::class, 'index']);
 Route::get('/association/dashboard', function () {
     return view('Associationspace.home');
 })->name('dashboard');
+Route::resource('beneficiaires', BeneficiaireController::class);
+
