@@ -45,7 +45,7 @@ class NourritureController extends Controller
     {
         $request->validate([
             'nom' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'required|in:' . implode(',', Nourriture::TYPES_NOURRITURE),
         ]);
 
         Nourriture::create($request->all());
@@ -89,7 +89,7 @@ class NourritureController extends Controller
     {
         $request->validate([
             'nom' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'sometimes|required|in:' . implode(',', Nourriture::TYPES_NOURRITURE),
         ]);
 
         $nourriture->update($request->all());
