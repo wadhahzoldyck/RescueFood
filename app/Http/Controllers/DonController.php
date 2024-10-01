@@ -16,7 +16,7 @@ class DonController extends Controller
     public function index()
     {
         $dons = Don::with('nourriture')->get();  // Charger les informations de Nourriture avec le Don
-        return view('dons.index', compact('dons'));
+        return view('dons.index', compact('dons'));// passer dons dans la vue index
     }
 
     /**
@@ -28,7 +28,7 @@ class DonController extends Controller
     {
  // Récupérer toutes les nourritures
  $nourritures = Nourriture::all();
- return view('dons.create', compact('nourritures')); // Passer la variable $nourritures à la vue
+ return view('dons.create', compact('nourritures')); // Passer $nourritures dans la vue create
 
     }
 

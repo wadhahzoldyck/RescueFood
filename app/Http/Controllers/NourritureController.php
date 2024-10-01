@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class NourritureController extends Controller
 {
-    public function __invoke(Request $request)
-    {
-        // Handle the single action here
-        return view('nourritures.index');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +14,8 @@ class NourritureController extends Controller
      */
     public function index()
     {
-        $nourritures = Nourriture::all();
-        return view('nourritures.index', compact('nourritures'));
+        $nourritures = Nourriture::all();//recupere tous les norritures
+        return view('nourritures.index', compact('nourritures'));// passer nourr dans index
 
     }
 
@@ -43,6 +38,7 @@ class NourritureController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'nom' => 'required|string|max:255',
             'type' => 'required|in:' . implode(',', Nourriture::TYPES_NOURRITURE),
