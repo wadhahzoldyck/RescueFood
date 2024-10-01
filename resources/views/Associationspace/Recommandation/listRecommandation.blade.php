@@ -7,6 +7,8 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                   
+                
                     <p class="card-title mb-0">Liste des recommandations</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
@@ -24,8 +26,9 @@
                                 @foreach($recommandations as $recommandation)
                                 <tr>
                                     <td>{{ $recommandation->titre }}</td>
-                                    <td>{{ $recommandation->description }}</td>
-                                    <td>{{ $recommandation->categorie }}</td>
+                                    <td style="word-wrap: break-word; white-space: normal; max-width: 200px;">
+                                        {{ $recommandation->description }}
+                                    </td>                                    <td>{{ $recommandation->categorie }}</td>
                                     <td>
                                         @if($recommandation->priorite == 1)
                                             <div class="badge badge-danger">Haute</div>

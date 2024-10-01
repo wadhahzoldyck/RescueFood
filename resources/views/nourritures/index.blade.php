@@ -20,6 +20,14 @@
                         </button>
                     </div>
                 @endif
+                
+                <script>
+                    // Wait 2 seconds (2000 milliseconds) before closing the alert
+                    setTimeout(function() {
+                        // Find the alert and trigger the dismiss (fade out and remove)
+                        $('.alert').alert('close');
+                    }, 2000);
+                </script>
 
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">

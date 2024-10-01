@@ -15,6 +15,14 @@
                         </button>
                     </div>
                 @endif
+                
+                <script>
+                    // Wait 2 seconds (2000 milliseconds) before closing the alert
+                    setTimeout(function() {
+                        // Find the alert and trigger the dismiss (fade out and remove)
+                        $('.alert').alert('close');
+                    }, 2000);
+                </script>
                     <p class="card-title mb-0">Liste des livreurs</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
