@@ -27,4 +27,3 @@ Route::get('/association/dashboard', function () {
 })->name('dashboard');
 Route::resource('recommandations', RecommandationController::class);
 Route::resource('beneficiaires', BeneficiaireController::class);
-
