@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recommandation_controllers', function (Blueprint $table) {
+        Schema::create('dons', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('nourriture_id')->constrained()->onDelete('cascade'); // Clé étrangère vers Nourriture
+            $table->integer('quantité');
+            $table->date('dateExpiration');
+            $table->string('status'); // 'disponible', 'fini'
+            $table->date('dateCollectePrevue')->nullable(); // Date de collecte facultative
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recommandation_controllers');
+        Schema::dropIfExists('dons');
     }
 };
