@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\RecommandationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,6 @@ use App\Http\Controllers\RestaurantController;
 |
 */
 
-<<<<<<< HEAD
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -24,12 +24,8 @@ Route::get('/','App\Http\Controllers\TemplateController@index');
 Route::get('/about','App\Http\Controllers\TemplateController@about');
 Route::get('/contact','App\Http\Controllers\TemplateController@contact');
 
-=======
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::get('/restaurant', [RestaurantController::class, 'index']);
 Route::get('/association/dashboard', function () {
     return view('Associationspace.home');
 })->name('dashboard');
->>>>>>> 00471d5c68083ec6413cfb3f3e76f3f297b8e339
+Route::resource('recommandations', RecommandationController::class);
