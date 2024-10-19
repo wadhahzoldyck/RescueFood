@@ -13,11 +13,34 @@ class DonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dons = Don::with('nourriture')->get();  // Charger les informations de Nourriture avec le Don
-        return view('dons.index', compact('dons'));// passer dons dans la vue index
+        $query = Don::with('nourriture');
+
+        // Recherche par quantité, statut, nom de nourriture ou type de nourriture
+        if ($request->has('search') && $request->search != '') {
+            $query->whereHas('nourriture', function($q) use ($request) {
+                $q->where('nom', 'LIKE', '%' . $request->search . '%')
+                  ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
+            })
+            ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('status', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
+        }
+
+        // Tri par un champ spécifié
+        if ($request->has('sort')) {
+            $order = $request->order === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($request->sort, $order);
+        }
+
+        // Récupérer les dons avec pagination
+        $dons = $query->paginate(10); // Changez 10 en le nombre de résultats par page que vous souhaitez
+
+        return view('dons.index', compact('dons'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
