@@ -7,8 +7,23 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                   
-                
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                <script>
+                    // Wait 2 seconds (2000 milliseconds) before closing the alert
+                    setTimeout(function() {
+                        // Find the alert and trigger the dismiss (fade out and remove)
+                        $('.alert').alert('close');
+                    }, 2000);
+                </script>
+
                     <p class="card-title mb-0">Liste des recommandations</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">

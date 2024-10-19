@@ -1,10 +1,21 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="{{ route('dashboard') }}">
-            <img src="{{ asset('space/images/logo.svg') }}" class="mr-2" alt="logo"/>
+        <a class="navbar-brand brand-logo d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}" style="display: flex; align-items: center; justify-content: center;">
+            <img src="{{ asset('space/images/logorescuefood2.png') }}" class="mr-2" alt="logo" style="width: 50px; height: 50px;"/>
+            <span style="
+                font-family: 'Arial', sans-serif;
+                font-weight: bold;
+                color: #103b6a;
+                font-size: 18px; /* Taille réduite */
+                letter-spacing: 1px; /* Espacement légèrement réduit */
+                text-transform: uppercase;
+                vertical-align: middle;">
+                RescueFood
+            </span>
         </a>
+
         <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
-            <img src="{{ asset('space/images/logo-mini.svg') }}" alt="logo"/>
+            <img src="{{ asset('space/images/logorescuefood2.png') }}" alt="logo" style="width: 50px; height: 50px;"/>
         </a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
