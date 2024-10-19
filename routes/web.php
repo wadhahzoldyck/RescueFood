@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
+
 use App\Http\Controllers\LivreurController;
+
+use App\Http\Controllers\RecommandationController;
 
 use App\Http\Controllers\BeneficiaireController;
 
@@ -28,5 +31,7 @@ Route::get('/association/dashboard', function () {
 
 
 Route::resource('livreurs', LivreurController::class);
+
+Route::resource('recommandations', RecommandationController::class);
 Route::resource('beneficiaires', BeneficiaireController::class);
 
