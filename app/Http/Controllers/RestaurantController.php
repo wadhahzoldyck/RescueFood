@@ -14,8 +14,13 @@ class RestaurantController extends Controller
     public function index()
     {
         //
+        return view('Restaurantspace/layout');
     }
-
+    public function home()
+    {
+        //
+        return view('Restaurantspace/home');
+    }
     /**
      * Show the form for creating a new resource.
      *

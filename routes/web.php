@@ -26,16 +26,23 @@ Route::get('/', 'App\Http\Controllers\TemplateController@index');
 Route::get('/about', 'App\Http\Controllers\TemplateController@about');
 Route::get('/contact', 'App\Http\Controllers\TemplateController@contact');
 
-Route::get('/restaurant', [RestaurantController::class, 'index']);
+//Route::get('/restaurant', [RestaurantController::class, 'index']);
+Route::get('/restaurant/dashboard', function () {
+    return view('Restaurantspace.home');
+})->name('restaurantdashboard');
 Route::get('/association/dashboard', function () {
     return view('Associationspace.home');
-})->name('dashboard');
+})->name('associationdashboard');
 
 
 Route::resource('livreurs', LivreurController::class);
-
 Route::resource('recommandations', RecommandationController::class);
 Route::resource('beneficiaires', BeneficiaireController::class);
 Route::resource('nourritures', NourritureController::class);
 Route::resource('dons', DonController::class);
 
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
