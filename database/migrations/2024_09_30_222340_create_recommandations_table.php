@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('recommandations', function (Blueprint $table) {
             $table->id(); 
+            $table->foreignId('nourriture_id')->constrained()->onDelete('cascade');
             $table->string('titre'); 
             $table->text('description'); 
             $table->string('categorie'); 
