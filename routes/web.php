@@ -2,12 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
-<<<<<<< HEAD
 use App\Http\Controllers\LivreurController;
 
-=======
 use App\Http\Controllers\BeneficiaireController;
->>>>>>> develop
 
 /*
 |--------------------------------------------------------------------------
