@@ -1,6 +1,6 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo d-flex align-items-center justify-content-center" href="{{ route('associationdashboard') }}" style="display: flex; align-items: center; justify-content: center;">
+        <a class="navbar-brand brand-logo d-flex align-items-center justify-content-center" href="{{ route('restaurantdashboard') }}" style="display: flex; align-items: center; justify-content: center;">
             <img src="{{ asset('space/images/logorescuefood2.png') }}" class="mr-2" alt="logo" style="width: 50px; height: 50px;"/>
             <span style="
                 font-family: 'Arial', sans-serif;
@@ -14,7 +14,7 @@
             </span>
         </a>
 
-        <a class="navbar-brand brand-logo-mini" href="{{ route('associationdashboard') }}">
+        <a class="navbar-brand brand-logo-mini" href="{{ route('restaurantdashboard') }}">
             <img src="{{ asset('space/images/logorescuefood2.png') }}" alt="logo" style="width: 50px; height: 50px;"/>
         </a>
     </div>

@@ -1,4 +1,4 @@
-@extends('associationspace.layout')
+@extends('Restaurantspace.layout')
 
 @section('content')
 <div class="content-wrapper">
@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 @endif
-                
+
                 <script>
                     // Wait 2 seconds (2000 milliseconds) before closing the alert
                     setTimeout(function() {
