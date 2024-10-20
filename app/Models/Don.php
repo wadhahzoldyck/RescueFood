@@ -19,6 +19,7 @@ class Don extends Model
         'nourriture_id',  // Référence à la classe Nourriture
         'quantité',
         'status',
+        'collection_id'
     ];
     // Liste des statuts possibles
     const STATUSES = [
@@ -32,4 +33,9 @@ class Don extends Model
     {
         return $this->dateExpiration ? Carbon::parse($this->dateExpiration)->format('d M Y') : null;
     }
+    public function collection()
+    {
+        return $this->belongsTo(Collection::class);
+    }
+    
 }
