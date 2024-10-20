@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\BeneficiaireController;
+use App\Http\Controllers\RedistributionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,5 @@ Route::get('/association/dashboard', function () {
     return view('Associationspace.home');
 })->name('dashboard');
 Route::resource('beneficiaires', BeneficiaireController::class);
+Route::resource('redistributions', RedistributionController::class);
 
