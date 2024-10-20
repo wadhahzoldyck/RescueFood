@@ -9,6 +9,7 @@ use App\Http\Controllers\RecommandationController;
 
 use App\Http\Controllers\BeneficiaireController;
 use App\Http\Controllers\DonController;
+use App\Http\Controllers\LivraisonController;
 use App\Http\Controllers\NourritureController;
 
 /*
@@ -38,4 +39,4 @@ Route::resource('recommandations', RecommandationController::class);
 Route::resource('beneficiaires', BeneficiaireController::class);
 Route::resource('nourritures', NourritureController::class);
 Route::resource('dons', DonController::class);
-
+Route::resource('livraison', LivraisonController::class);
