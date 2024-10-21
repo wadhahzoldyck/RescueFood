@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Recommandation;
 use App\Models\Nourriture;
+use Illuminate\Support\Facades\Auth;
 
 class RecommandationController extends Controller
 {
@@ -14,8 +15,9 @@ class RecommandationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $recommandations = Recommandation::with('nourriture')->get(); 
+    {        $userId = Auth::id();
+
+        $recommandations = Recommandation::where('user_id', $userId)->with('nourriture')->get();
         return view('Associationspace.Recommandation.listRecommandation', compact('recommandations'));
     }
     
@@ -45,8 +47,10 @@ class RecommandationController extends Controller
             'categorie' => 'required|string',
             'priorite' => 'required|integer|min:1|max:3',
         ]);
-    
+        $userId = Auth::id();
         $recommandation = new Recommandation;
+        $recommandation->user_id =$userId;
+
         $recommandation->titre = $request->titre;
         $recommandation->nourriture_id=$request->nourriture_id; 
 
