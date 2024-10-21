@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\Don;
-
+use Illuminate\Support\Facades\Auth;
 
 class CollectController extends Controller
 {
@@ -15,8 +15,9 @@ class CollectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $collections = Collection::all();
+    {        $userId = Auth::id();
+        $collections = Collection::where('user_id', $userId)->get();
+
         return view('Associationspace.collection.index', compact('collections'));
     }
 
@@ -44,8 +45,11 @@ class CollectController extends Controller
         'etat' => 'required|string',
         'dateCollecte' => 'required|date',
     ]);
-    $collection = Collection::create($request->only('dateCollecte', 'etat'));
+    $userId = Auth::id();
 
+    $collection = Collection::create(
+        $request->only('dateCollecte', 'etat') + ['user_id' =>$userId]
+    );
     
     Don::whereIn('id', $request->dons)->update(['collection_id' => $collection->id]);
 
