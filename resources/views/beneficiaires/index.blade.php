@@ -40,6 +40,15 @@
                             </div>
                         </form>
                     </div>
+                @endif
+
+                <script>
+                    // Wait 2 seconds (2000 milliseconds) before closing the alert
+                    setTimeout(function() {
+                        // Find the alert and trigger the dismiss (fade out and remove)
+                        $('.alert').alert('close');
+                    }, 2000);
+                </script>
 
                     <a href="{{ route('beneficiaires.create') }}" class="btn btn-primary mb-3">Add Beneficiary</a>
 

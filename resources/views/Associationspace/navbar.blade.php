@@ -1,10 +1,21 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="{{ route('dashboard') }}">
-            <img src="{{ asset('space/images/logo.svg') }}" class="mr-2" alt="logo"/>
+        <a class="navbar-brand brand-logo d-flex align-items-center justify-content-center" href="{{ route('associationdashboard') }}" style="display: flex; align-items: center; justify-content: center;">
+            <img src="{{ asset('space/images/logorescuefood2.png') }}" class="mr-2" alt="logo" style="width: 50px; height: 50px;"/>
+            <span style="
+                font-family: 'Arial', sans-serif;
+                font-weight: bold;
+                color: #103b6a;
+                font-size: 18px; /* Taille réduite */
+                letter-spacing: 1px; /* Espacement légèrement réduit */
+                text-transform: uppercase;
+                vertical-align: middle;">
+                RescueFood
+            </span>
         </a>
-        <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
-            <img src="{{ asset('space/images/logo-mini.svg') }}" alt="logo"/>
+
+        <a class="navbar-brand brand-logo-mini" href="{{ route('associationdashboard') }}">
+            <img src="{{ asset('space/images/logorescuefood2.png') }}" alt="logo" style="width: 50px; height: 50px;"/>
         </a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -68,17 +79,21 @@
             </li>
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                    <img src="{{ asset('space/images/faces/face28.jpg') }}" alt="profile"/>
+                    <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"/>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                     <a class="dropdown-item">
                         <i class="ti-settings text-primary"></i>
                         Settings
                     </a>
-                    <a class="dropdown-item">
+                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="ti-power-off text-primary"></i>
                         Logout
                     </a>
+                    
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             </li>
             <li class="nav-item nav-settings d-none d-lg-flex">
