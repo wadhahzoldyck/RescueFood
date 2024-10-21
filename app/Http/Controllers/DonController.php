@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Don;
 use App\Models\Nourriture;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DonController extends Controller
@@ -15,17 +16,19 @@ class DonController extends Controller
      */
     public function index(Request $request)
     {
+        // Mettre à jour en masse les dons expirés avant de les lister
+        $this->updateExpiredDons();
         $query = Don::with('nourriture');
 
         // Recherche par quantité, statut, nom de nourriture ou type de nourriture
         if ($request->has('search') && $request->search != '') {
-            $query->whereHas('nourriture', function($q) use ($request) {
+            $query->whereHas('nourriture', function ($q) use ($request) {
                 $q->where('nom', 'LIKE', '%' . $request->search . '%')
-                  ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
+                    ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
             })
-            ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('status', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
+                ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('status', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
         }
 
         // Tri par un champ spécifié
@@ -37,9 +40,21 @@ class DonController extends Controller
         // Récupérer les dons avec pagination
         $dons = $query->paginate(10); // Changez 10 en le nombre de résultats par page que vous souhaitez
 
+        // Vérifier et mettre à jour le statut d'expiration pour chaque don
+        foreach ($dons as $don) {
+            $don->checkExpiration();
+        }
+
         return view('dons.index', compact('dons'));
     }
 
+    public function updateExpiredDons()
+    {
+        // Mettre à jour tous les dons expirés d'un coup
+        Don::where('dateExpiration', '<', Carbon::now())
+            ->where('status', 'disponible')
+            ->update(['status' => 'fini']);
+    }
 
 
     /**
@@ -49,9 +64,9 @@ class DonController extends Controller
      */
     public function create()
     {
- // Récupérer toutes les nourritures
- $nourritures = Nourriture::all();
- return view('dons.create', compact('nourritures')); // Passer $nourritures dans la vue create
+        // Récupérer toutes les nourritures
+        $nourritures = Nourriture::all();
+        return view('dons.create', compact('nourritures')); // Passer $nourritures dans la vue create
 
     }
 
@@ -63,26 +78,26 @@ class DonController extends Controller
      */
     public function store(Request $request)
     {
-         // Validation des données
-    $request->validate([
-        'nourriture_id' => 'required|exists:nourritures,id',
-        'quantité' => 'required|integer|min:1',
-        'dateExpiration' => 'required|date',
-        'status' => 'required|string',
-        'dateCollectePrevue' => 'required|date',
-    ]);
+        // Validation des données
+        $request->validate([
+            'nourriture_id' => 'required|exists:nourritures,id',
+            'quantité' => 'required|integer|min:1',
+            'dateExpiration' => 'required|date',
+            'status' => 'required|string',
+            'dateCollectePrevue' => 'required|date',
+        ]);
 
-    // Créer un nouveau don
-    $don = new Don();
-    $don->nourriture_id = $request->nourriture_id; // Affecter l'ID de la nourriture au don
-    $don->quantité = $request->quantité;
-    $don->dateExpiration = $request->dateExpiration;
-    $don->status = $request->status;
-    $don->dateCollectePrevue = $request->dateCollectePrevue;
-    $don->save();
+        // Créer un nouveau don
+        $don = new Don();
+        $don->nourriture_id = $request->nourriture_id; // Affecter l'ID de la nourriture au don
+        $don->quantité = $request->quantité;
+        $don->dateExpiration = $request->dateExpiration;
+        $don->status = $request->status;
+        $don->dateCollectePrevue = $request->dateCollectePrevue;
+        $don->save();
 
-    return redirect()->route('dons.index')->with('success', 'Don créé avec succès.');
-   }
+        return redirect()->route('dons.index')->with('success', 'Don créé avec succès.');
+    }
 
     /**
      * Display the specified resource.
@@ -92,6 +107,9 @@ class DonController extends Controller
      */
     public function show(Don $don)
     {
+        // Vérifier et mettre à jour le statut d'expiration du don
+        $don->checkExpiration();
+
         return view('dons.show', compact('don'));
     }
 

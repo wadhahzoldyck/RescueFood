@@ -23,7 +23,8 @@ class Don extends Model
     // Liste des statuts possibles
     const STATUSES = [
         'disponible',
-        'fini'
+        'fini',
+        'expirer'
     ];
     protected $dates = ['dateExpiration', 'dateCollectePrevue']; // Ajoutez ici les champs de type date
 
@@ -31,5 +32,21 @@ class Don extends Model
     public function getFormattedDateExpirationAttribute()
     {
         return $this->dateExpiration ? Carbon::parse($this->dateExpiration)->format('d M Y') : null;
+    }
+        // Check if the donation has expired
+        public function isExpired()
+        {
+            return $this->dateExpiration && Carbon::now()->greaterThan($this->dateExpiration);
+        }
+
+       // Méthode pour vérifier et gérer l'expiration
+    public function checkExpiration()
+    {
+        // Vérifier si la date d'expiration est passée
+        if ($this->dateExpiration && Carbon::now()->gt($this->dateExpiration)) {
+            // Si le don est expiré, changer son statut à 'fini'
+            $this->status = 'expirer';
+            $this->save();  // Sauvegarder les modifications
+        }
     }
 }
