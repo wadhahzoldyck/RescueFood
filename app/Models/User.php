@@ -74,4 +74,17 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+      /**
+     * Get the authenticated user with their role.
+     *
+     * @return User|null
+     */
+    public static function authenticatedUserWithRole()
+    {
+        return auth()->user(); // This returns the authenticated user, including the role
+    }
+    public function getRole()
+    {
+        return $this->role; // Assuming `role` is a column in your `users` table
+    }
 }
