@@ -15,5 +15,11 @@ class Livreur extends Model
         'vehicule',
         'disponibilite',
         'zone_couverture',
+        'email'
     ];
+
+    public function livraisons()
+    {
+        return $this->hasMany(Livraison::class);
+    }
 }

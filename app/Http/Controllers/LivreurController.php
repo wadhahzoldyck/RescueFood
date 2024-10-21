@@ -44,6 +44,7 @@ class LivreurController extends Controller
             'telephone' => 'required|numeric',
             'vehicule' => 'required|string|min:3|max:255',
             'zone_couverture' => 'required|string|min:3|max:255',
+            'email' => 'required|email|unique:livreurs,email',
         ]);
 
         Livreur::create([
@@ -52,6 +53,7 @@ class LivreurController extends Controller
             'vehicule' => $request->vehicule,
             'disponibilite' => $request->disponibilite,
             'zone_couverture' => $request->zone_couverture,
+            'email' => $request->email,
         ]);
         return redirect()->route('livreurs.index')->with('success', 'Livreur ajouté avec succès!');
     }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('vehicule');
             $table->boolean('disponibilite')->default(true);
             $table->string('zone_couverture');
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }

@@ -27,4 +27,8 @@ class Nourriture extends Model
         'Plats préparés',
     ];
     protected $fillable = ['nom', 'type'];
+    public function recommandations()
+    {
+        return $this->hasMany(Recommandation::class);
+    }
 }

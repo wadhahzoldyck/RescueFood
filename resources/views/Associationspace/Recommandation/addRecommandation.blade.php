@@ -11,8 +11,15 @@
                     
                     <form class="pt-3" action="{{ route('recommandations.store') }}" method="POST">
                         @csrf
-                        
-                       
+                        <div class="form-group">
+                        <label for="nourriture">Nourriture</label>
+                            <select class="form-control" id="nourriture" name="nourriture_id" required>
+                                <option value="" disabled selected>Choisir une nourriture</option>
+                                @foreach($nourritures as $nourriture)
+                                    <option value="{{ $nourriture->id }}">{{ $nourriture->nom }} ({{ $nourriture->type }})</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <input type="text" class="form-control form-control-lg" id="titre" name="titre" placeholder="Titre de la recommandation" required>
                             @error('titre')

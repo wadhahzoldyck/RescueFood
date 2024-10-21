@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recommandations', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('titre'); 
-            $table->text('description'); 
-            $table->string('categorie'); 
-            $table->integer('priorite');      
-            $table->timestamps(); 
+        Schema::create('collections', function (Blueprint $table) {
+            $table->id();
+            $table->date('dateCollecte');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('etat'); 
+            $table->timestamps();
+
         });
-        
     }
 
     /**
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recommandations');
+        Schema::dropIfExists('collections');
     }
 };

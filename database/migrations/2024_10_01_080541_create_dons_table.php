@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('dateExpiration');
             $table->string('status'); // 'disponible', 'fini'
             $table->date('dateCollectePrevue')->nullable(); // Date de collecte facultative
+            $table->unsignedBigInteger('collection_id')->nullable(); // Allow null initially
+            $table->foreign('collection_id')->references('id')->on('collections')->onDelete('set null');
             $table->timestamps();
         });
     }

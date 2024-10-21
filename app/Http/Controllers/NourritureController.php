@@ -12,12 +12,28 @@ class NourritureController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nourritures = Nourriture::all();//recupere tous les norritures
-        return view('nourritures.index', compact('nourritures'));// passer nourr dans index
+        $query = Nourriture::query();
 
+        // Recherche par nom ou type
+        if ($request->has('search') && $request->search != '') {
+            $query->where('nom', 'LIKE', '%' . $request->search . '%')
+                  ->orWhere('type', 'LIKE', '%' . $request->search . '%');
+        }
+
+        // Tri par un champ spécifié
+        if ($request->has('sort')) {
+            $order = $request->order === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($request->sort, $order);
+        }
+
+        // Récupérer les nourritures avec pagination
+        $nourritures = $query->paginate(10); // Changez 10 en le nombre de résultats par page que vous souhaitez
+
+        return view('nourritures.index', compact('nourritures'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,7 +54,7 @@ class NourritureController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'nom' => 'required|string|max:255',
             'type' => 'required|in:' . implode(',', Nourriture::TYPES_NOURRITURE),
