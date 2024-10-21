@@ -10,14 +10,11 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\LivreurController;
 use App\Http\Controllers\RecommandationController;
 use App\Http\Controllers\BeneficiaireController;
-<<<<<<< HEAD
 use App\Http\Controllers\RedistributionController;
-=======
 use App\Http\Controllers\DonController;
 use App\Http\Controllers\LivraisonController;
 use App\Http\Controllers\NourritureController;
 use App\Http\Controllers\CollectController;
->>>>>>> develop
 
 /*
 |---------------------------------------------------------------------------
@@ -34,19 +31,16 @@ Route::get('/', 'App\Http\Controllers\TemplateController@index');
 Route::get('/about', 'App\Http\Controllers\TemplateController@about');
 Route::get('/contact', 'App\Http\Controllers\TemplateController@contact');
 
-<<<<<<< HEAD
 Route::get('/restaurant', [RestaurantController::class, 'index']);
 Route::get('/association/dashboard', function () {
     return view('Associationspace.home');
 })->name('dashboard');
 Route::resource('beneficiaires', BeneficiaireController::class);
 Route::resource('redistributions', RedistributionController::class);
-=======
 // Public routes (accessible to everyone)
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
->>>>>>> develop
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
@@ -77,8 +71,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::resource('recommandations', RecommandationController::class);
         Route::resource('beneficiaires', BeneficiaireController::class);
-        
+
         Route::resource('collect', CollectController::class);
-        
+
         Route::resource('livraison', LivraisonController::class);    });
 });
