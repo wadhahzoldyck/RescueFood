@@ -47,3 +47,13 @@ Route::resource('dons', DonController::class);
 Route::resource('collect', CollectController::class);
 
 Route::resource('livraison', LivraisonController::class);
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
