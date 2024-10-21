@@ -15,7 +15,7 @@
                         </button>
                     </div>
                 @endif
-
+                
                 <script>
                     // Wait 2 seconds (2000 milliseconds) before closing the alert
                     setTimeout(function() {
@@ -23,13 +23,14 @@
                         $('.alert').alert('close');
                     }, 2000);
                 </script>
-
+                
                     <p class="card-title mb-0">Liste des recommandations</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-borderless">
                             <thead>
                                 <tr>
                                     <th>Titre</th>
+                                    <th>Nourriture</th>
                                     <th>Description</th>
                                     <th>Catégorie</th>
                                     <th>Priorité</th>
@@ -41,9 +42,11 @@
                                 @foreach($recommandations as $recommandation)
                                 <tr>
                                     <td>{{ $recommandation->titre }}</td>
+                                    <td>{{ $recommandation->nourriture->nom ?? 'N/A' }}</td>
                                     <td style="word-wrap: break-word; white-space: normal; max-width: 200px;">
-                                        {{ $recommandation->description }}
-                                    </td>                                    <td>{{ $recommandation->categorie }}</td>
+    {{ $recommandation->description }}
+</td>                                    
+<td>{{ $recommandation->categorie }}</td>
                                     <td>
                                         @if($recommandation->priorite == 1)
                                             <div class="badge badge-danger">Haute</div>

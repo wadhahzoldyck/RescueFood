@@ -46,13 +46,15 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
           <i class="icon-grid-2 menu-icon"></i>
-          <span class="menu-title">Tables</span>
+          <span class="menu-title">Livraison</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="tables">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"><a class="nav-link" href="{{ asset('pages/tables/basic-table.html') }}">Basic table</a></li>
-          </ul>
+            <li class="nav-item"><a class="nav-link" href="{{ route('livraison.index') }}">   List Livraison
+            </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('livraison.create') }}">    Ajouter Livraison
+            </a></li>          </ul>
         </div>
       </li>
       <li class="nav-item">
