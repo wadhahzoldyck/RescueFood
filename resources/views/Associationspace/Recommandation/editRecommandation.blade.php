@@ -11,7 +11,26 @@
                     <form class="pt-3" action="{{ route('recommandations.update', $recommandation->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-
+                        <div class="form-group">
+                            <label for="nourriture">Nourriture</label>
+                            <select class="form-control" id="nourriture" name="nourriture_id" required>
+                                <option value="" disabled {{ !$recommandation->nourriture_id ? 'selected' : '' }}>
+                                    Choisir une nourriture
+                                </option>
+                        
+                                @foreach($nourritures as $nourriture)
+                                    <option value="{{ $nourriture->id }}" 
+                                        {{ $recommandation->nourriture_id == $nourriture->id ? 'selected' : '' }}>
+                                        {{ $nourriture->nom }} ({{ $nourriture->type }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        
+                            @error('nourriture_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        
                         <!-- Champ pour le titre -->
                         <div class="form-group">
                             <input type="text" class="form-control form-control-lg" id="titre" name="titre" placeholder="Titre de la recommandation" value="{{ old('titre', $recommandation->titre) }}">

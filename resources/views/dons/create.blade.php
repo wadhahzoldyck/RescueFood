@@ -1,4 +1,4 @@
-@extends('associationspace.layout')
+@extends('Restaurantspace.layout')
 
 @section('content')
 <div class="content-wrapper">

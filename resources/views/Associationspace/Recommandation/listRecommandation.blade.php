@@ -7,7 +7,22 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                   
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+                
+                <script>
+                    // Wait 2 seconds (2000 milliseconds) before closing the alert
+                    setTimeout(function() {
+                        // Find the alert and trigger the dismiss (fade out and remove)
+                        $('.alert').alert('close');
+                    }, 2000);
+                </script>
                 
                     <p class="card-title mb-0">Liste des recommandations</p>
                     <div class="table-responsive">
@@ -15,6 +30,7 @@
                             <thead>
                                 <tr>
                                     <th>Titre</th>
+                                    <th>Nourriture</th>
                                     <th>Description</th>
                                     <th>Catégorie</th>
                                     <th>Priorité</th>
@@ -26,9 +42,11 @@
                                 @foreach($recommandations as $recommandation)
                                 <tr>
                                     <td>{{ $recommandation->titre }}</td>
+                                    <td>{{ $recommandation->nourriture->nom ?? 'N/A' }}</td>
                                     <td style="word-wrap: break-word; white-space: normal; max-width: 200px;">
-                                        {{ $recommandation->description }}
-                                    </td>                                    <td>{{ $recommandation->categorie }}</td>
+    {{ $recommandation->description }}
+</td>                                    
+<td>{{ $recommandation->categorie }}</td>
                                     <td>
                                         @if($recommandation->priorite == 1)
                                             <div class="badge badge-danger">Haute</div>
