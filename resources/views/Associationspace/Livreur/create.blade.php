@@ -11,9 +11,16 @@
                     <form class="pt-3" action="{{ route('livreurs.store') }}" method="POST">
                         @csrf
 
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Adresse email" required>
+                            @error('email')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Nom -->
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-lg" id="nom" name="nom" placeholder="Nom du livreur" required>
+                            <input type="text" class="form-control form-control-lg" id="nom" name="nom" placeholder="Nom du livreur">
                             @error('nom')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror

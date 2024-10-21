@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('livreurs', function (Blueprint $table) {
+        Schema::create('livraisons', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->string('telephone');
-            $table->string('vehicule');
-            $table->boolean('disponibilite')->default(true);
-            $table->string('zone_couverture');
-            $table->string('email')->unique();
+            $table->string('adresse');
+            $table->date('date_livraison');
+            $table->string('etat');
+            // $table->foreignId('distribution_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('livreur_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('livreurs');
+        Schema::dropIfExists('livraisons');
     }
 };
