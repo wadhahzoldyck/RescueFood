@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('dons', function (Blueprint $table) {
             $table->id();
             $table->foreignId('nourriture_id')->constrained()->onDelete('cascade'); // Clé étrangère vers Nourriture
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Clé étrangère vers Nourriture
             $table->integer('quantité');
             $table->date('dateExpiration');
             $table->string('status'); // 'disponible', 'fini'

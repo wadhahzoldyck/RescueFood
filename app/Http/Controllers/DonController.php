@@ -6,6 +6,7 @@ use App\Models\Don;
 use App\Models\Nourriture;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DonController extends Controller
 {
@@ -16,19 +17,23 @@ class DonController extends Controller
      */
     public function index(Request $request)
     {
+        $userId = Auth::id(); // Récupérer l'ID de l'utilisateur connecté
+
         // Mettre à jour en masse les dons expirés avant de les lister
         $this->updateExpiredDons();
-        $query = Don::with('nourriture');
+
+        // Requête initiale incluant le filtre sur l'ID utilisateur
+        $query = Don::where('user_id', $userId)->with('nourriture');
 
         // Recherche par quantité, statut, nom de nourriture ou type de nourriture
         if ($request->has('search') && $request->search != '') {
             $query->whereHas('nourriture', function ($q) use ($request) {
                 $q->where('nom', 'LIKE', '%' . $request->search . '%')
-                    ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
+                  ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
             })
-                ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
-                ->orWhere('status', 'LIKE', '%' . $request->search . '%')
-                ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
+            ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('status', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
         }
 
         // Tri par un champ spécifié
@@ -87,13 +92,17 @@ class DonController extends Controller
             'dateCollectePrevue' => 'required|date',
         ]);
 
+        $userId = Auth::id(); // Récupérer l'ID de l'utilisateur connecté
+
         // Créer un nouveau don
         $don = new Don();
+        $don->user_id = $userId; // Affecter l'ID de l'utilisateur au don
         $don->nourriture_id = $request->nourriture_id; // Affecter l'ID de la nourriture au don
         $don->quantité = $request->quantité;
         $don->dateExpiration = $request->dateExpiration;
         $don->status = $request->status;
         $don->dateCollectePrevue = $request->dateCollectePrevue;
+
         $don->save();
 
         return redirect()->route('dons.index')->with('success', 'Don créé avec succès.');
