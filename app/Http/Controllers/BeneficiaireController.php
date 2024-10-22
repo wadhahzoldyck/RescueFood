@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Beneficiaire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BeneficiaireController extends Controller
 {
@@ -15,6 +16,8 @@ class BeneficiaireController extends Controller
      */
     public function index(Request $request)
     {
+        $userId = Auth::id();
+
         // Get search and sort parameters from the request
         $search = $request->input('search');
         $sortBy = $request->input('sort_by', 'nom'); // Default sort by 'nom'
@@ -22,6 +25,7 @@ class BeneficiaireController extends Controller
 
         // Query with search and sort functionality
         $beneficiaires = Beneficiaire::query()
+            ->where('user_id', $userId)
             ->when($search, function ($query, $search) {
                 return $query->where('nom', 'like', '%' . $search . '%')
                              ->orWhere('contact', 'like', '%' . $search . '%');
@@ -49,7 +53,8 @@ class BeneficiaireController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   $userId = Auth::id();
+
         // Validate the input with custom error messages
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
@@ -58,6 +63,7 @@ class BeneficiaireController extends Controller
             'nom.required' => 'Le nom est obligatoire.',
             'contact.required' => 'Le contact est obligatoire.',
         ]);
+        $validated['user_id'] = $userId;
 
         // Create the Beneficiaire
         Beneficiaire::create($validated);

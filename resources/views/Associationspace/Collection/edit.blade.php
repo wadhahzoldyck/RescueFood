@@ -35,6 +35,13 @@
                         @method('PUT')
 
                         <div class="form-group">
+                            <input type="text" class="form-control form-control-lg" id="titre" name="titre" placeholder="Titre de la collection" value="{{ old('titre', $collection->titre) }}">
+                            @error('titre')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="dateCollecte">Date de collecte</label>
                             <input type="date" class="form-control" id="dateCollecte" name="dateCollecte" 
                                 value="{{ $collection->dateCollecte }}" required>
@@ -53,11 +60,10 @@
                             <label for="dons">Dons associés</label>
                             <select class="form-control" id="dons" name="dons[]" multiple required>
                                 @foreach($dons as $don)
-                                    <option value="{{ $don->id }}" 
-                                        {{ in_array($don->id, $collection->listeDons->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                        {{ $don->description }} - {{ $don->quantité }}
-                                    </option>
-                                @endforeach
+                                <option value="{{ $don->id }}">
+                                    {{ $don->nourriture->nom }} ({{ $don->nourriture->type }}) - {{ $don->quantité }}
+                                </option>
+                            @endforeach
                             </select>
                         </div>
 

@@ -21,6 +21,8 @@ class Redistribution extends Model
         'date',
         'status',
         'beneficiaire_id',
+        'collection_id',
+        'user_id'
     ];
 
     // List of possible statuses
