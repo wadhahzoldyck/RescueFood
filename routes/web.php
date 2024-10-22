@@ -1,9 +1,6 @@
 <?php
 
-
-
-
-
+use App\Http\Controllers\AdminCollectController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
@@ -74,18 +71,18 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('Adminspace.home');
     })->name('admindashboard');
-    Route::resource('nourritures', NourritureController::class);
-    Route::resource('dons', DonController::class);
+    Route::resource('nourrituresadmin', NourritureController::class);
+    Route::resource('donsadmin', DonController::class);
 
-    Route::resource('beneficiaires', BeneficiaireController::class);
-    Route::resource('redistributions', RedistributionController::class);
+    Route::resource('beneficiairesadmin', BeneficiaireController::class);
+    Route::resource('redistributionsadmin', RedistributionController::class);
     Route::resource('livreurs', LivreurController::class);
 
-    Route::resource('recommandations', RecommandationController::class);
-    Route::resource('collect', CollectController::class);
-    Route::get('generate-pdf', [CollectController::class, 'generatePDF']);
-    Route::get('export-collections', [CollectController::class, 'export']);
-    Route::get('/collection/{id}/qr-code', [CollectController::class, 'generateQRCode'])->name('collection.qr-code');
+    Route::resource('recommandationsadmin', RecommandationController::class);
+    Route::resource('collectadmin', AdminCollectController::class);
+    Route::get('generate-pdfadmin', [AdminCollectController::class, 'generatePDF']);
+    Route::get('export-collectionsadmin', [AdminCollectController::class, 'export']);
+    Route::get('/collection/{id}/qr-codeadmin', [AdminCollectController::class, 'generateQRCode'])->name('collection.qr-code');
 
-    Route::resource('livraison', LivraisonController::class);
+    Route::resource('livraisonadmin', LivraisonController::class);
 });

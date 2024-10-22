@@ -67,12 +67,12 @@
         <div class="collapse" id="collection-elements">
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('collect.create') }}">
+                    <a class="nav-link" href="{{ route('collectadmin.create') }}">
                         Ajouter<br>Collection
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('collect.index') }}">
+                    <a class="nav-link" href="{{ route('collectadmin.index') }}">
                         Liste<br>Collections
                     </a>
                 </li>
