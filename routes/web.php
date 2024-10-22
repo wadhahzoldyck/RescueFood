@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminCollectController;
+use App\Http\Controllers\AdminLivreurController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
@@ -76,7 +77,7 @@ Route::middleware('role:admin')->group(function () {
 
     Route::resource('beneficiairesadmin', BeneficiaireController::class);
     Route::resource('redistributionsadmin', RedistributionController::class);
-    Route::resource('livreurs', LivreurController::class);
+    Route::resource('livreursadmin', AdminLivreurController::class);
 
     Route::resource('recommandationsadmin', RecommandationController::class);
     Route::resource('collectadmin', AdminCollectController::class);

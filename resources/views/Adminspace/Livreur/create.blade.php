@@ -1,4 +1,4 @@
-@extends('Associationspace.layout')
+@extends('Adminspace.layout')
 
 @section('content')
     <div class="content-wrapper d-flex align-items-center auth px-0">
@@ -8,11 +8,11 @@
 
                     <h4>Ajouter un Livre</h4>
                     <h6 class="font-weight-light">Remplissez le formulaire ci-dessous pour ajouter un livreur</h6>
-                    <form class="pt-3" action="{{ route('livreurs.store') }}" method="POST">
+                    <form class="pt-3" action="{{ route('livreursadmin.store') }}" method="POST">
                         @csrf
 
                         <div class="form-group">
-                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Adresse email" >
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Adresse email" required>
                             @error('email')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -28,7 +28,7 @@
 
                         <!-- Téléphone -->
                         <div class="form-group">
-                            <input type="tel" class="form-control form-control-lg" id="telephone" name="telephone" placeholder="Numéro de téléphone" >
+                            <input type="tel" class="form-control form-control-lg" id="telephone" name="telephone" placeholder="Numéro de téléphone" required>
                             @error('telephone')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -36,7 +36,7 @@
 
                         <!-- Véhicule -->
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-lg" id="vehicule" name="vehicule" placeholder="Type de véhicule" >
+                            <input type="text" class="form-control form-control-lg" id="vehicule" name="vehicule" placeholder="Type de véhicule" required>
                             @error('vehicule')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -47,7 +47,7 @@
 
                         <!-- Zone de couverture -->
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-lg" id="zone_couverture" name="zone_couverture" placeholder="Zone de couverture" >
+                            <input type="text" class="form-control form-control-lg" id="zone_couverture" name="zone_couverture" placeholder="Zone de couverture" required>
                             @error('zone_couverture')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror

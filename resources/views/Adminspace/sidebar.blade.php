@@ -28,8 +28,8 @@
         </a>
         <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('livreurs.index') }}">List Livreur</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('livreurs.create') }}">Add Livreur</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('livreursadmin.index') }}">List Livreur</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('livreursadmin.create') }}">Add Livreur</a></li>
             </ul>
         </div>
     </li>
