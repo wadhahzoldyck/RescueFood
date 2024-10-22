@@ -46,13 +46,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('dashboard');
 
     // Routes accessible only by the restaurant role
-    Route::middleware('role:restaurant')->group(function () {
-        Route::get('/restaurant/dashboard', function () {
-            return view('Restaurantspace.home');
-        })->name('restaurantdashboard');
-        Route::resource('nourritures', NourritureController::class);
-        Route::resource('dons', DonController::class);
-    });
+    // Route::middleware('role:restaurant')->group(function () {
+    //     Route::get('/restaurant/dashboard', function () {
+    //        return view('Restaurantspace.home');
+    //     })->name('restaurantdashboard');
+    //     Route::resource('nourritures', NourritureController::class);
+    //     Route::resource('dons', DonController::class);
+    // });
+
+
+    // Routes accessible only by the restaurant role
+Route::middleware('role:restaurant')->group(function () {
+    Route::get('/restaurant/dashboard', [DonController::class, 'showDashboard'])->name('restaurantdashboard');
+    Route::resource('nourritures', NourritureController::class);
+    Route::resource('dons', DonController::class);
+});
 
     // Routes accessible only by the association role
     Route::middleware('role:association')->group(function () {
@@ -64,8 +72,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::resource('recommandations', RecommandationController::class);
         Route::resource('beneficiaires', BeneficiaireController::class);
-        
+
         Route::resource('collect', CollectController::class);
-        
+
         Route::resource('livraison', LivraisonController::class);    });
 });
