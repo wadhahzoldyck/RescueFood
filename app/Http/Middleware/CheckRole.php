@@ -18,16 +18,14 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        // Check if the user is authenticated
         if (!Auth::check()) {
-            return redirect()->route('login'); // Redirect to login if not authenticated
+            return redirect()->route('login'); 
         }
 
-        // Check if the user's role matches the required role
         if (Auth::user()->role !== $role) {
-            abort(403, 'Unauthorized action.'); // Return 403 Forbidden if not authorized
+            abort(403, 'Unauthorized action.'); 
         }
 
-        return $next($request); // Allow the request to proceed
+        return $next($request); 
     }
 }
