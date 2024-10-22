@@ -44,12 +44,12 @@
         <div class="collapse" id="recommandation-elements">
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('recommandations.create') }}">
+                    <a class="nav-link" href="{{ route('recommandationsadmin.create') }}">
                         Ajouter<br>Recommandation
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('recommandations.index') }}">
+                    <a class="nav-link" href="{{ route('recommandationsadmin.index') }}">
                         Liste<br>Recommandation
                     </a>
                 </li>

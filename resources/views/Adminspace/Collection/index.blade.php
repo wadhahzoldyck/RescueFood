@@ -36,11 +36,11 @@
                         </div>
                     @endif
 
-                    <a href="{{ route('collect.create') }}" class="btn btn-primary mb-3">Ajouter une collecte</a>
-                    <a href="{{ url('generate-pdf') }}" class="ms-2 btn btn-primary mb-3">
+                    <a href="{{ route('collectadmin.create') }}" class="btn btn-primary mb-3">Ajouter une collecte</a>
+                    <a href="{{ url('generate-pdfadmin') }}" class="ms-2 btn btn-primary mb-3">
                         Generate PDF
                     </a>
-                    <a href="{{ url('export-collections') }}" class="ms-2 btn btn-primary mb-3">
+                    <a href="{{ url('export-collectionsadmin') }}" class="ms-2 btn btn-primary mb-3">
                         Generate Exel
                     </a>
                     <div class="table-responsive">
@@ -69,8 +69,8 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <a href="{{ route('collect.edit', $collection->id) }}" class="btn btn-warning btn-sm">Modifier</a>
-                                            <form action="{{ route('collect.destroy', $collection->id) }}" method="POST" style="display:inline">
+                                            <a href="{{ route('collectadmin.edit', $collection->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                                            <form action="{{ route('collectadmin.destroy', $collection->id) }}" method="POST" style="display:inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette collecte?');">Supprimer</button>

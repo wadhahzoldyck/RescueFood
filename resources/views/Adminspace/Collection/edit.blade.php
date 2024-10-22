@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('collect.update', $collection->id) }}" method="POST">
+                    <form action="{{ route('collectadmin.update', $collection->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -68,7 +68,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                        <a href="{{ route('collect.index') }}" class="btn btn-secondary">Fermer</a>
+                        <a href="{{ route('collectadmin.index') }}" class="btn btn-secondary">Fermer</a>
                     </form>
                 </div>
             </div>

@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('collect.store') }}" method="POST">
+                    <form action="{{ route('collectadmin.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <input type="text" class="form-control form-control-lg" id="titre" name="titre" placeholder="Titre de la collection" required>
@@ -65,7 +65,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Créer Collecte</button>
-                        <a href="{{ route('collect.index') }}" class="btn btn-secondary">Fermer</a>
+                        <a href="{{ route('collectadmin.index') }}" class="btn btn-secondary">Fermer</a>
                     </form>
                 </div>
             </div>
