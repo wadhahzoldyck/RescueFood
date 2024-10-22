@@ -45,13 +45,26 @@
                         @csrf
 
                         <div class="form-group">
+                            <label for="nom">Nom de la Redistribution</label>
+                            <input
+                                type="text"
+                                class="form-control @error('nom') is-invalid @enderror"
+                                id="nom"
+                                name="nom"
+                            >
+                            @error('nom')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="date">Date</label>
-                            <input 
-                                type="date" 
-                                class="form-control @error('date') is-invalid @enderror" 
-                                id="date" 
-                                name="date" 
-                                value="{{ old('date') }}" 
+                            <input
+                                type="date"
+                                class="form-control @error('date') is-invalid @enderror"
+                                id="date"
+                                name="date"
+                                value="{{ old('date') }}"
                             >
                             @error('date')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -60,13 +73,13 @@
 
                         <div class="form-group">
                             <label for="status">Statut</label>
-                            <select 
-                                class="form-control @error('status') is-invalid @enderror" 
-                                id="status" 
-                                name="status" 
+                            <select
+                                class="form-control @error('status') is-invalid @enderror"
+                                id="status"
+                                name="status"
                             >
                                 @foreach (App\Models\Redistribution::STATUSES as $status)
-                                    <option value="{{ $status }}" 
+                                    <option value="{{ $status }}"
                                         {{ old('status') == $status ? 'selected' : '' }}>
                                         {{ ucfirst($status) }}
                                     </option>
@@ -79,13 +92,13 @@
 
                         <div class="form-group">
                             <label for="beneficiaire_id">Bénéficiaire</label>
-                            <select 
-                                class="form-control @error('beneficiaire_id') is-invalid @enderror" 
-                                id="beneficiaire_id" 
-                                name="beneficiaire_id" 
+                            <select
+                                class="form-control @error('beneficiaire_id') is-invalid @enderror"
+                                id="beneficiaire_id"
+                                name="beneficiaire_id"
                             >
                                 @foreach ($beneficiaires as $beneficiaire)
-                                    <option value="{{ $beneficiaire->id }}" 
+                                    <option value="{{ $beneficiaire->id }}"
                                         {{ old('beneficiaire_id') == $beneficiaire->id ? 'selected' : '' }}>
                                         {{ $beneficiaire->nom }}
                                     </option>

@@ -45,6 +45,7 @@ class RedistributionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nom' => 'required|string|max:255',
             'date' => 'required|date',
             'status' => 'required|in:' . implode(',', Redistribution::STATUSES),
             'beneficiaire_id' => 'required|exists:beneficiaires,id',
@@ -70,6 +71,7 @@ class RedistributionController extends Controller
     public function update(Request $request, Redistribution $redistribution)
     {
         $validated = $request->validate([
+            'nom' => 'required|string|max:255',
             'date' => 'required|date',
             'status' => 'required|in:' . implode(',', Redistribution::STATUSES),
             'beneficiaire_id' => 'required|exists:beneficiaires,id',

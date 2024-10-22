@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('adresse');
             $table->date('date_livraison');
             $table->string('etat');
-            // $table->foreignId('distribution_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('redistribution_id')->constrained()->onDelete('cascade');
             $table->foreignId('livreur_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

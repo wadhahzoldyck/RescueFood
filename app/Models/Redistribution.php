@@ -17,6 +17,7 @@ class Redistribution extends Model
     }
 
     protected $fillable = [
+        'nom',
         'date',
         'status',
         'beneficiaire_id',
