@@ -7,6 +7,7 @@ use App\Models\Nourriture;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DonController extends Controller
 {
@@ -29,11 +30,11 @@ class DonController extends Controller
         if ($request->has('search') && $request->search != '') {
             $query->whereHas('nourriture', function ($q) use ($request) {
                 $q->where('nom', 'LIKE', '%' . $request->search . '%')
-                  ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
+                    ->orWhere('type', 'LIKE', '%' . $request->search . '%'); // Recherche par type de nourriture
             })
-            ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('status', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
+                ->orWhere('quantité', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('status', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('dateExpiration', 'LIKE', '%' . $request->search . '%');
         }
 
         // Tri par un champ spécifié
@@ -155,6 +156,137 @@ class DonController extends Controller
 
         return redirect()->route('dons.index')->with('success', 'Don updated successfully.');
     }
+    // public function showDashboard()
+    // {
+    //     // Récupérer les statistiques des dons
+    //     $donsToday = Don::whereDate('created_at', now())->count();
+    //     $totalDons = Don::count();
+    //     $donsLast30Days = Don::where('created_at', '>=', now()->subDays(30))->count();
+
+    //     // Calculer le changement de pourcentage des dons par rapport aux 30 jours précédents
+    //     $donsLast30DaysPrevious = Don::where('created_at', '<', now()->subDays(30))
+    //                                   ->where('created_at', '>=', now()->subDays(60))->count();
+    //     $donPercentageChange = $donsLast30DaysPrevious > 0
+    //         ? (($donsLast30Days - $donsLast30DaysPrevious) / $donsLast30DaysPrevious) * 100
+    //         : 100; // ou 0 si aucun don dans les 30 jours précédents
+
+    //     // Statistiques des nourritures
+    //     $nourrituresToday = Nourriture::whereDate('created_at', now())->count();
+    //     $totalNourritures = Nourriture::count();
+    //     $nourrituresLast30Days = Nourriture::where('created_at', '>=', now()->subDays(30))->count();
+
+    //     // Calculer le changement de pourcentage des nourritures ajoutées
+    //     $nourrituresLast30DaysPrevious = Nourriture::where('created_at', '<', now()->subDays(30))
+    //                                                 ->where('created_at', '>=', now()->subDays(60))->count();
+    //     $nourriturePercentageChange = $nourrituresLast30DaysPrevious > 0
+    //         ? (($nourrituresLast30Days - $nourrituresLast30DaysPrevious) / $nourrituresLast30DaysPrevious) * 100
+    //         : 100; // ou 0 si aucune nourriture ajoutée dans les 30 jours précédents
+
+    //     // Statistiques supplémentaires
+    //     $expiredDons = Don::where('dateExpiration', '<', now())->count();
+    //     $availableDons = Don::where('dateExpiration', '>', now())->count();
+
+    //     // Total des dons et quantités, en utilisant le champ 'quantité' du modèle Don
+    //     $foodQuantityGiven = Don::select('nourriture_id', DB::raw('SUM(quantité) as total_quantity'))
+    //                              ->groupBy('nourriture_id')
+    //                              ->get();
+
+    //     // Total de la nourriture collectée et en attente de collecte
+    //     $foodCollected = Don::where('status', 'collected')->sum('quantité');
+    //     $foodPendingCollection = Don::where('status', 'pending')->sum('quantité');
+
+    //     return view('Restaurantspace.home', compact(
+    //         'donsToday',
+    //         'totalDons',
+    //         'donsLast30Days',
+    //         'donPercentageChange',
+    //         'nourrituresToday',
+    //         'totalNourritures',
+    //         'nourrituresLast30Days',
+    //         'nourriturePercentageChange',
+    //         'expiredDons',
+    //         'availableDons',
+    //         'foodQuantityGiven',
+    //         'foodCollected',
+    //         'foodPendingCollection'
+    //     ));
+    // }
+
+
+
+    public function showDashboard()
+    {
+        // Récupérer les statistiques des dons
+        $donsToday = Don::whereDate('created_at', now())->count();
+        $totalDons = Don::count();
+        $donsLast30Days = Don::where('created_at', '>=', now()->subDays(30))->count();
+
+        // Calculer le changement de pourcentage des dons par rapport aux 30 jours précédents
+        $donsLast30DaysPrevious = Don::where('created_at', '<', now()->subDays(30))
+                                      ->where('created_at', '>=', now()->subDays(60))->count();
+        $donPercentageChange = $donsLast30DaysPrevious > 0
+            ? (($donsLast30Days - $donsLast30DaysPrevious) / $donsLast30DaysPrevious) * 100
+            : 100; // ou 0 si aucun don dans les 30 jours précédents
+
+        // Statistiques des nourritures
+        $nourrituresToday = Nourriture::whereDate('created_at', now())->count();
+        $totalNourritures = Nourriture::count();
+        $nourrituresLast30Days = Nourriture::where('created_at', '>=', now()->subDays(30))->count();
+
+        // Calculer le changement de pourcentage des nourritures ajoutées
+        $nourrituresLast30DaysPrevious = Nourriture::where('created_at', '<', now()->subDays(30))
+                                                    ->where('created_at', '>=', now()->subDays(60))->count();
+        $nourriturePercentageChange = $nourrituresLast30DaysPrevious > 0
+            ? (($nourrituresLast30Days - $nourrituresLast30DaysPrevious) / $nourrituresLast30DaysPrevious) * 100
+            : 100; // ou 0 si aucune nourriture ajoutée dans les 30 jours précédents
+
+        // Statistiques supplémentaires
+        $expiredDons = Don::where('dateExpiration', '<', now())->count();
+        $availableDons = Don::where('dateExpiration', '>', now())->count();
+
+        // Total des dons et quantités par type de nourriture
+        $foodQuantityGiven = Don::select('nourriture_id', DB::raw('SUM(quantité) as total_quantity'))
+                                 ->groupBy('nourriture_id')
+                                 ->with('nourriture') // Assurez-vous que le modèle a la relation
+                                 ->get();
+
+        // Récupérer les détails des dons par type de nourriture
+        $donsDetailsByNourriture = Don::with('nourriture')
+                                      ->select('nourriture_id', DB::raw('SUM(quantité) as total_quantity'))
+                                      ->groupBy('nourriture_id')
+                                      ->get()
+                                      ->map(function ($don) {
+                                          return [
+                                              'nourriture' => $don->nourriture->nom, // Récupérer le nom de la nourriture
+                                              'total_quantity' => $don->total_quantity,
+                                          ];
+                                      });
+
+        // Total de la nourriture collectée et en attente de collecte
+        $foodCollected = Don::where('status', 'collected')->sum('quantité');
+        $foodPendingCollection = Don::where('status', 'pending')->sum('quantité');
+
+        return view('Restaurantspace.home', compact(
+            'donsToday',
+            'totalDons',
+            'donsLast30Days',
+            'donPercentageChange',
+            'nourrituresToday',
+            'totalNourritures',
+            'nourrituresLast30Days',
+            'nourriturePercentageChange',
+            'expiredDons',
+            'availableDons',
+            'foodQuantityGiven',
+            'foodCollected',
+            'foodPendingCollection',
+            'donsDetailsByNourriture' // Ajouter les détails des dons par nourriture
+        ));
+    }
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
