@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 class Don extends Model
 {
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     // Relation avec le modèle Nourriture
     public function nourriture()
     {
@@ -19,7 +23,8 @@ class Don extends Model
         'nourriture_id',  // Référence à la classe Nourriture
         'quantité',
         'status',
-        'collection_id'
+        'collection_id',
+        'user_id'
     ];
     // Liste des statuts possibles
     const STATUSES = [
@@ -54,5 +59,5 @@ class Don extends Model
     {
         return $this->belongsTo(Collection::class);
     }
-    
+
 }

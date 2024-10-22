@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Nourriture;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NourritureController extends Controller
 {
@@ -14,12 +15,15 @@ class NourritureController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Nourriture::query();
+        $userId = Auth::id(); // Récupérer l'ID de l'utilisateur connecté
+        $query = Nourriture::where('user_id', $userId); // Filtrer par ID utilisateur
 
         // Recherche par nom ou type
         if ($request->has('search') && $request->search != '') {
-            $query->where('nom', 'LIKE', '%' . $request->search . '%')
+            $query->where(function ($q) use ($request) {
+                $q->where('nom', 'LIKE', '%' . $request->search . '%')
                   ->orWhere('type', 'LIKE', '%' . $request->search . '%');
+            });
         }
 
         // Tri par un champ spécifié
@@ -29,10 +33,11 @@ class NourritureController extends Controller
         }
 
         // Récupérer les nourritures avec pagination
-        $nourritures = $query->paginate(10); // Changez 10 en le nombre de résultats par page que vous souhaitez
+        $nourritures = $query->paginate(10); // Changer 10 par le nombre de résultats souhaités
 
         return view('nourritures.index', compact('nourritures'));
     }
+
 
 
     /**
@@ -54,17 +59,25 @@ class NourritureController extends Controller
      */
     public function store(Request $request)
     {
-
+        // Validation des données
         $request->validate([
             'nom' => 'required|string|max:255',
             'type' => 'required|in:' . implode(',', Nourriture::TYPES_NOURRITURE),
         ]);
 
-        Nourriture::create($request->all());
+        $userId = Auth::id(); // Récupérer l'ID de l'utilisateur connecté
+
+        // Créer un nouvel enregistrement de Nourriture
+        $nourriture = new Nourriture();
+        $nourriture->user_id = $userId; // Assigner l'ID de l'utilisateur à la nouvelle nourriture
+        $nourriture->nom = $request->nom;
+        $nourriture->type = $request->type;
+
+        $nourriture->save(); // Sauvegarder la nourriture
 
         return redirect()->route('nourritures.index')->with('success', 'Nourriture created successfully.');
-
     }
+
 
     /**
      * Display the specified resource.

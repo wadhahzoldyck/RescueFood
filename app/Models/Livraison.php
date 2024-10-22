@@ -7,15 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Livraison extends Model
 {
-    protected $fillable = ['adresse', 'etat', 'date_livraison', 'livreur_id', 'distribution_id'];
+    protected $fillable = ['adresse', 'etat', 'date_livraison', 'livreur_id', 'redistribution_id', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function livreur()
     {
         return $this->belongsTo(Livreur::class);
     }
 
-    public function distribution()
+    public function redistribution()
     {
-            // return $this->belongsTo(Distribution::class);
+        return $this->belongsTo(Redistribution::class);
     }
     use HasFactory;
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('disponibilite')->default(true);
             $table->string('zone_couverture');
             $table->string('email')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,9 +15,13 @@ class Livreur extends Model
         'vehicule',
         'disponibilite',
         'zone_couverture',
-        'email'
+        'email',
+        'user_id'
     ];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function livraisons()
     {
         return $this->hasMany(Livraison::class);

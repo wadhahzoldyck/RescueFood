@@ -35,14 +35,14 @@
 
                         <!-- Sélecteur pour la distribution -->
                         <div class="form-group">
-                            <label for="distribution_id">Distribution</label>
-                            <select class="form-control" id="distribution_id" name="distribution_id" >
-                                <option value="" disabled selected>Choisir une distribution</option>
-                                @foreach($distributions as $distribution)
-                                    <option value="{{ $distribution['id'] }}">{{ $distribution['nom'] }}</option>
+                            <label for="redistribution_id">Redistribution</label>
+                            <select class="form-control" id="redistribution_id" name="redistribution_id">
+                                <option value="" disabled selected>Choisir une redistribution</option>
+                                @foreach($redistributions as $redistribution)
+                                <option value="{{ $redistribution->id }}">{{ $redistribution->nom }}</option>
                                 @endforeach
                             </select>
-                            @error('distribution_id')
+                            @error('redistribution_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
