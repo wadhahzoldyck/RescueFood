@@ -68,3 +68,24 @@ Route::middleware('role:association')->group(function () {
 
     Route::resource('livraison', LivraisonController::class);
 });
+
+
+Route::middleware('role:admin')->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('Adminspace.home');
+    })->name('admindashboard');
+    Route::resource('nourritures', NourritureController::class);
+    Route::resource('dons', DonController::class);
+
+    Route::resource('beneficiaires', BeneficiaireController::class);
+    Route::resource('redistributions', RedistributionController::class);
+    Route::resource('livreurs', LivreurController::class);
+
+    Route::resource('recommandations', RecommandationController::class);
+    Route::resource('collect', CollectController::class);
+    Route::get('generate-pdf', [CollectController::class, 'generatePDF']);
+    Route::get('export-collections', [CollectController::class, 'export']);
+    Route::get('/collection/{id}/qr-code', [CollectController::class, 'generateQRCode'])->name('collection.qr-code');
+
+    Route::resource('livraison', LivraisonController::class);
+});
