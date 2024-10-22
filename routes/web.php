@@ -31,12 +31,7 @@ Route::get('/', 'App\Http\Controllers\TemplateController@index');
 Route::get('/about', 'App\Http\Controllers\TemplateController@about');
 Route::get('/contact', 'App\Http\Controllers\TemplateController@contact');
 
-Route::get('/restaurant', [RestaurantController::class, 'index']);
-Route::get('/association/dashboard', function () {
-    return view('Associationspace.home');
-})->name('dashboard');
-Route::resource('beneficiaires', BeneficiaireController::class);
-Route::resource('redistributions', RedistributionController::class);
+
 // Public routes (accessible to everyone)
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
@@ -46,33 +41,30 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 
-    Route::middleware('role:restaurant')->group(function () {
-        Route::get('/restaurant/dashboard', function () {
-            return view('Restaurantspace.home');
-        })->name('restaurantdashboard');
-        Route::resource('nourritures', NourritureController::class);
-        Route::resource('dons', DonController::class);
-    });
 
-    Route::middleware('role:association')->group(function () {
-        Route::get('/association/dashboard', function () {
-            return view('Associationspace.home');
-        })->name('associationdashboard');
+// Routes accessible only by the restaurant role
+Route::middleware('role:restaurant')->group(function () {
+    Route::get('/restaurant/dashboard', [DonController::class, 'showDashboard'])->name('restaurantdashboard');
+    Route::resource('nourritures', NourritureController::class);
+    Route::resource('dons', DonController::class);
+});
 
-        Route::resource('livreurs', LivreurController::class);
+Route::middleware('role:association')->group(function () {
+    Route::get('/association/dashboard', function () {
+        return view('Associationspace.home');
+    })->name('associationdashboard');
 
-        Route::resource('recommandations', RecommandationController::class);
-        Route::resource('beneficiaires', BeneficiaireController::class);
 
-        Route::resource('collect', CollectController::class);
-        Route::get('generate-pdf', [CollectController::class, 'generatePDF']);
-        Route::get('export-collections', [CollectController::class, 'export']);
-        Route::get('/collection/{id}/qr-code', [CollectController::class, 'generateQRCode'])->name('collection.qr-code');
+    Route::resource('beneficiaires', BeneficiaireController::class);
+    Route::resource('redistributions', RedistributionController::class);
+    Route::resource('livreurs', LivreurController::class);
 
-        Route::resource('livraison', LivraisonController::class);    });
+    Route::resource('recommandations', RecommandationController::class);
+    Route::resource('collect', CollectController::class);
+    Route::get('generate-pdf', [CollectController::class, 'generatePDF']);
+    Route::get('export-collections', [CollectController::class, 'export']);
+    Route::get('/collection/{id}/qr-code', [CollectController::class, 'generateQRCode'])->name('collection.qr-code');
+
+    Route::resource('livraison', LivraisonController::class);
 });

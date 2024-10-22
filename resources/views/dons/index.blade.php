@@ -76,13 +76,13 @@
                                             @endif
                                         </a>
                                     </th>
+                                    <th class="text-dark">propriétaire de la Collection</th>
                                     <th class="text-dark">Actions</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @foreach ($dons as $don)
-                                    <!-- Vérifie si le don est terminé ou expiré et applique un style de fond approprié -->
                                     <tr style="
                                         {{ $don->status == 'fini' ? 'background-color: #ff6666; color: white;' : '' }}
                                         {{ $don->dateExpiration < now() && $don->status != 'fini' ? 'background-color: #ffcc99; color: white;' : '' }}">
@@ -90,6 +90,13 @@
                                         <td>{{ $don->quantité }}</td>
                                         <td>{{ $don->status }}</td>
                                         <td>{{ $don->getFormattedDateExpirationAttribute() }}</td>
+                                        <td>
+                                            @if ($don->collection)
+                                                {{ $don->collection->user->name }} <!-- Afficher le nom de l'utilisateur associé -->
+                                            @else
+                                                Aucun propriétaire <!-- Message si aucune collection n'est associée -->
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('dons.edit', $don->id) }}" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
