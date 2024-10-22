@@ -101,8 +101,11 @@ class CollectController extends Controller
      */
     public function create()
     {
-        $dons = Don::whereDoesntHave('collection')->get();
-        return view('Associationspace.collection.create',compact('dons'));
+        $dons = Don::where('status', 'disponible')
+        ->where('dateExpiration', '>=', now())
+        ->whereDoesntHave('collection')
+        ->get();
+            return view('Associationspace.collection.create',compact('dons'));
 
     }
 
@@ -124,8 +127,10 @@ class CollectController extends Controller
         $request->only('titre','dateCollecte', 'etat') + ['user_id' =>$userId]
     );
     
-    Don::whereIn('id', $request->dons)->update(['collection_id' => $collection->id]);
-
+    Don::whereIn('id', $request->dons)->update([
+        'collection_id' => $collection->id,
+        'status' => 'fini', 
+    ]);
     return redirect()->route('collect.index')->with('success', 'Collection created successfully.');    
     }
 
@@ -149,8 +154,18 @@ class CollectController extends Controller
     public function edit($id)
     {
         $collection = Collection::findOrFail($id);
-        $dons = Don::all();
-        return view('Associationspace.collection.edit', compact('collection','dons'));    }
+        
+        $dons = Don::where('status', 'disponible')
+            ->where('dateExpiration', '>=', now())
+            ->where(function ($query) use ($collection) {
+                $query->whereDoesntHave('collection') 
+                      ->orWhere('collection_id', $collection->id);
+            })
+            ->get();
+    
+        return view('Associationspace.collection.edit', compact('collection', 'dons'));
+    }
+    
 
     /**
      * Update the specified resource in storage.
