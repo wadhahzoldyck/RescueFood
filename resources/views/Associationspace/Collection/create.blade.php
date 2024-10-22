@@ -33,6 +33,13 @@
                     <form action="{{ route('collect.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
+                            <input type="text" class="form-control form-control-lg" id="titre" name="titre" placeholder="Titre de la collection" required>
+                            @error('titre')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="dateCollecte">Date de collecte</label>
                             <input type="date" class="form-control" id="dateCollecte" name="dateCollecte" required>
                         </div>

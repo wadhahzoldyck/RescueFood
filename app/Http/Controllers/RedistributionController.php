@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Redistribution;
 use App\Models\Beneficiaire;
+use App\Models\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RedistributionController extends Controller
 {
@@ -13,12 +15,14 @@ class RedistributionController extends Controller
      */
     public function index(Request $request)
     {
+        $userId = Auth::id();
         $search = $request->input('search');
         $sortBy = $request->input('sort_by', 'date');
         $order = $request->input('order', 'asc');
         $beneficiaires = Beneficiaire::all();
 
         $redistributions = Redistribution::with('beneficiaire')
+            ->where('user_id', $userId)
             ->when($search, function ($query, $search) {
                 $query->whereHas('beneficiaire', function ($q) use ($search) {
                     $q->where('nom', 'like', '%' . $search . '%');
@@ -36,8 +40,8 @@ class RedistributionController extends Controller
     public function create()
     {
         $beneficiaires = Beneficiaire::all(); // Retrieve beneficiaires for the form
-        return view('redistributions.create', compact('beneficiaires'));
-    }
+        $collections = Collection::all();
+        return view('redistributions.create', compact('beneficiaires', 'collections'));    }
 
     /**
      * Store a newly created redistribution in the database.
@@ -48,7 +52,10 @@ class RedistributionController extends Controller
             'date' => 'required|date',
             'status' => 'required|in:' . implode(',', Redistribution::STATUSES),
             'beneficiaire_id' => 'required|exists:beneficiaires,id',
+            'collection_id' => 'required|exists:collections,id',
         ]);
+        $userId = Auth::id();
+        $validated['user_id'] = $userId;
 
         Redistribution::create($validated);
 
@@ -61,7 +68,9 @@ class RedistributionController extends Controller
     public function edit(Redistribution $redistribution)
     {
         $beneficiaires = Beneficiaire::all(); // Retrieve all beneficiaires for the dropdown
-        return view('redistributions.edit', compact('redistribution', 'beneficiaires'));
+        $collections = Collection::all();
+
+        return view('redistributions.edit', compact('redistribution', 'beneficiaires','collections'));
     }
 
     /**
