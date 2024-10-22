@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminCollectController;
+use App\Http\Controllers\AdminRecommandationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestaurantController;
@@ -76,9 +77,9 @@ Route::middleware('role:admin')->group(function () {
 
     Route::resource('beneficiairesadmin', BeneficiaireController::class);
     Route::resource('redistributionsadmin', RedistributionController::class);
-    Route::resource('livreurs', LivreurController::class);
+    Route::resource('livreursadmin', LivreurController::class);
 
-    Route::resource('recommandationsadmin', RecommandationController::class);
+    Route::resource('recommandationsadmin', AdminRecommandationController::class);
     Route::resource('collectadmin', AdminCollectController::class);
     Route::get('generate-pdfadmin', [AdminCollectController::class, 'generatePDF']);
     Route::get('export-collectionsadmin', [AdminCollectController::class, 'export']);
