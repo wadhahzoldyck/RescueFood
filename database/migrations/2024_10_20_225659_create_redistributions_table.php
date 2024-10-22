@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('redistributions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('beneficiaire_id')->constrained()->onDelete('cascade'); // Beneficiaire relationship
+            $table->foreignId('collection_id')->constrained()->onDelete('cascade'); 
             $table->date('date');    // Redistribution date
             $table->string('status'); // Redistribution status (loading, completed, canceled)
             $table->timestamps();     // Created and updated timestamps

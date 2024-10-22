@@ -40,7 +40,7 @@
                             </div>
                         </form>
                     </div>
-                @endif
+                
 
                 <script>
                     // Wait 2 seconds (2000 milliseconds) before closing the alert

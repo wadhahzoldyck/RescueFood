@@ -96,6 +96,25 @@
                             @enderror
                         </div>
 
+                        <div class="form-group">
+                            <label for="collection_id">Collection</label>
+                            <select 
+                                class="form-control @error('collection_id') is-invalid @enderror" 
+                                id="collection_id" 
+                                name="collection_id" 
+                            >
+                                @foreach ($collections as $collection)
+                                    <option value="{{ $collection->id }}" 
+                                        {{ old('collection_id') == $collection->id ? 'selected' : '' }}>
+                                        {{ $collection->titre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('collection_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Créer</button>
                         <a href="{{ route('redistributions.index') }}" class="btn btn-secondary">Annuler</a>
                     </form>

@@ -47,6 +47,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Titre</th>
                                     <th>Date de Collecte</th>
                                     <th>État</th>
                                     <th>Dons Associés</th>
@@ -56,6 +57,8 @@
                             <tbody>
                                 @foreach ($collections as $collection)
                                     <tr>
+                                        <td>{{ $collection->titre }}</td>
+
                                         <td>{{ $collection->dateCollecte }}</td>
                                         <td>{{ ucfirst($collection->etat) }}</td>
                                         <td>

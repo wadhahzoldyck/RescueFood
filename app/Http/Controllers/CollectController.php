@@ -114,14 +114,14 @@ class CollectController extends Controller
      */
     public function store(Request $request)
     {$request->validate([
-       
+       'titre' => 'required|string',
         'etat' => 'required|string',
         'dateCollecte' => 'required|date',
     ]);
     $userId = Auth::id();
 
     $collection = Collection::create(
-        $request->only('dateCollecte', 'etat') + ['user_id' =>$userId]
+        $request->only('titre','dateCollecte', 'etat') + ['user_id' =>$userId]
     );
     
     Don::whereIn('id', $request->dons)->update(['collection_id' => $collection->id]);
@@ -149,7 +149,8 @@ class CollectController extends Controller
     public function edit($id)
     {
         $collection = Collection::findOrFail($id);
-        return view('Associationspace.collection.edit', compact('collection'));    }
+        $dons = Don::all();
+        return view('Associationspace.collection.edit', compact('collection','dons'));    }
 
     /**
      * Update the specified resource in storage.
