@@ -37,7 +37,12 @@
                     @endif
 
                     <a href="{{ route('collect.create') }}" class="btn btn-primary mb-3">Ajouter une collecte</a>
-
+                    <a href="{{ url('generate-pdf') }}" class="ms-2 btn btn-primary mb-3">
+                        Generate PDF
+                    </a>
+                    <a href="{{ url('export-collections') }}" class="ms-2 btn btn-primary mb-3">
+                        Generate Exel
+                    </a>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -67,6 +72,8 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette collecte?');">Supprimer</button>
                                             </form>
+                                            <a href="{{ route('collection.qr-code', $collection->id) }}" class="btn btn-info btn-sm" target="_blank">Générer QR Code</a>
+
                                         </td>
                                     </tr>
                                 @endforeach
