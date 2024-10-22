@@ -130,7 +130,7 @@ class AdminCollectController extends Controller
         'collection_id' => $collection->id,
         'status' => 'fini', 
     ]);
-    return redirect()->route('collect.index')->with('success', 'Collection created successfully.');    
+    return redirect()->route('collectadmin.index')->with('success', 'Collection created successfully.');    
     }
 
     /**
@@ -184,7 +184,7 @@ class AdminCollectController extends Controller
         $collect = Collection::findOrFail($id);
         $collect->update($request->all());
 
-        return redirect()->route('collect.index')->with('success', 'collection modifié avec succès!');
+        return redirect()->route('collectadmin.index')->with('success', 'collection modifié avec succès!');
     }
 
     /**
@@ -198,7 +198,7 @@ class AdminCollectController extends Controller
         
         $collection = Collection::findOrFail($id);
         $collection->delete();
-        return redirect()->route('collect.index')->with('success', 'collection supprimé avec succès!');
+        return redirect()->route('collectadmin.index')->with('success', 'collection supprimé avec succès!');
     
     }
 }
