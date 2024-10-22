@@ -15,7 +15,7 @@ class LivreurController extends Controller
     public function index()
     {
         //
-        $livreurs = Livreur::all();
+        $livreurs = Livreur::where('user_id', auth()->user()->id)->get();
         return view('Associationspace.livreur.index', compact('livreurs'));
     }
 
@@ -54,6 +54,7 @@ class LivreurController extends Controller
             'disponibilite' => $request->disponibilite,
             'zone_couverture' => $request->zone_couverture,
             'email' => $request->email,
+            'user_id' => auth()->user()->id,
         ]);
         return redirect()->route('livreurs.index')->with('success', 'Livreur ajouté avec succès!');
     }

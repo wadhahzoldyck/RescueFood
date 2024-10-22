@@ -6,9 +6,9 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">List of Beneficiaries</h4>
+                    <h4 class="card-title">Liste des Redistributions</h4>
                     <p class="card-description">
-                        Manage your beneficiaries here.
+                        Gérez vos redistributions ici.
                     </p>
 
                     <!-- Display flash messages -->
@@ -30,36 +30,28 @@
                         </div>
                     @endif
 
+                    <!-- Search Form -->
                     <div class="form-group">
-                        <form method="GET" action="{{ route('beneficiaires.index') }}">
+                        <form method="GET" action="{{ route('redistributions.index') }}">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="search" placeholder="Search by name" value="{{ request('search') }}">
+                                <input type="text" class="form-control" name="search" placeholder="Rechercher par bénéficiaire" value="{{ request('search') }}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Search</button>
+                                    <button class="btn btn-primary" type="submit">Rechercher</button>
                                 </div>
                             </div>
                         </form>
                     </div>
 
-
-                <script>
-                    // Wait 2 seconds (2000 milliseconds) before closing the alert
-                    setTimeout(function() {
-                        // Find the alert and trigger the dismiss (fade out and remove)
-                        $('.alert').alert('close');
-                    }, 2000);
-                </script>
-
-                    <a href="{{ route('beneficiaires.create') }}" class="btn btn-primary mb-3">Add Beneficiary</a>
+                    <a href="{{ route('redistributions.create') }}" class="btn btn-primary mb-3">Créer une Redistribution</a>
 
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>
-                                        <a href="{{ route('beneficiaires.index', ['sort' => 'nom', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark">
-                                            Name
-                                            @if (request('sort') === 'nom')
+                                        <a href="{{ route('redistributions.index', ['sort' => 'date', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark">
+                                            Date
+                                            @if (request('sort') === 'date')
                                                 <i class="fas fa-sort-{{ request('order') === 'asc' ? 'up' : 'down' }}"></i>
                                             @else
                                                 <i class="fas fa-sort"></i>
@@ -67,31 +59,31 @@
                                         </a>
                                     </th>
                                     <th>
-                                        <a href="{{ route('beneficiaires.index', ['sort' => 'contact', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark">
-                                            Contact
-                                            @if (request('sort') === 'contact')
+                                        <a href="{{ route('redistributions.index', ['sort' => 'status', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" class="text-dark">
+                                            Statut
+                                            @if (request('sort') === 'status')
                                                 <i class="fas fa-sort-{{ request('order') === 'asc' ? 'up' : 'down' }}"></i>
                                             @else
                                                 <i class="fas fa-sort"></i>
                                             @endif
                                         </a>
                                     </th>
-                                    <th>Created At</th>
+                                    <th>Bénéficiaire</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($beneficiaires as $beneficiaire)
+                                @foreach ($redistributions as $redistribution)
                                     <tr>
-                                        <td>{{ $beneficiaire->nom }}</td>
-                                        <td>{{ $beneficiaire->contact }}</td>
-                                        <td>{{ $beneficiaire->created_at->format('d M Y') }}</td>
+                                        <td>{{ $redistribution->formatted_date }}</td>
+                                        <td>{{ $redistribution->status_label }}</td>
+                                        <td>{{ $redistribution->beneficiaire->nom }}</td>
                                         <td>
-                                            <a href="{{ route('beneficiaires.edit', $beneficiaire->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('beneficiaires.destroy', $beneficiaire->id) }}" method="POST" style="display:inline">
+                                            <a href="{{ route('redistributions.edit', $redistribution->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                                            <form action="{{ route('redistributions.destroy', $redistribution->id) }}" method="POST" style="display:inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this beneficiary?');">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette redistribution ?');">Supprimer</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -101,7 +93,7 @@
                     </div>
 
                     <div class="pagination justify-content-center">
-                        {{ $beneficiaires->appends(request()->input())->links('vendor.pagination.bootstrap-4') }}
+                        {{ $redistributions->appends(request()->input())->links('vendor.pagination.bootstrap-4') }}
                     </div>
                 </div>
             </div>

@@ -9,5 +9,5 @@ class Beneficiaire extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'contact'];
+    protected $fillable = ['nom', 'contact','user_id'];
 }

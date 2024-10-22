@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\Don;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Symfony\Component\HttpFoundation\Response;
 
 class CollectController extends Controller
 {
@@ -20,7 +26,74 @@ class CollectController extends Controller
 
         return view('Associationspace.collection.index', compact('collections'));
     }
+    public function generatePDF()
+    {
+        $userId = Auth::id();
+        $collections = Collection::where('user_id', $userId)->get();
+    
+        $data = [
+            'title' => 'User Collections Report',
+            'date' => date('m/d/Y'),
+            'collections' => $collections
+        ];
+    
+        $pdf = PDF::loadView('Associationspace.Collection.myPDF', $data);
+    
+        return $pdf->download('collections_report.pdf');
+    }
 
+    public function export()
+    {
+        $userId = Auth::id();
+        $collections = Collection::where('user_id', $userId)->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'ID');
+        $sheet->setCellValue('B1', 'Date Collecte');
+        $sheet->setCellValue('C1', 'User ID');
+        $sheet->setCellValue('D1', 'État');
+        $sheet->setCellValue('E1', 'Created At');
+        $sheet->setCellValue('F1', 'Updated At');
+
+       
+        $row = 2;
+        foreach ($collections as $collection) {
+            $sheet->setCellValue('A' . $row, $collection->id);
+            $sheet->setCellValue('B' . $row, $collection->dateCollecte);
+            $sheet->setCellValue('C' . $row, $collection->user_id);
+            $sheet->setCellValue('D' . $row, $collection->etat);
+            $sheet->setCellValue('E' . $row, $collection->created_at);
+            $sheet->setCellValue('F' . $row, $collection->updated_at);
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'collections.xlsx';
+        $filePath = public_path($fileName);
+        $writer->save($filePath);
+
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+    
+
+    public function generateQRCode($id)
+    {
+        $collection = Collection::findOrFail($id);
+        $qrCode = new QrCode($collection->id); 
+
+        $qrCode->setSize(300);
+        $qrCode->setMargin(10);
+
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        return new Response($result->getString(), 200, [
+            'Content-Type' => $result->getMimeType(),
+            'Content-Disposition' => 'inline; filename="qrcode.png"',
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -41,14 +114,14 @@ class CollectController extends Controller
      */
     public function store(Request $request)
     {$request->validate([
-       
+       'titre' => 'required|string',
         'etat' => 'required|string',
         'dateCollecte' => 'required|date',
     ]);
     $userId = Auth::id();
 
     $collection = Collection::create(
-        $request->only('dateCollecte', 'etat') + ['user_id' =>$userId]
+        $request->only('titre','dateCollecte', 'etat') + ['user_id' =>$userId]
     );
     
     Don::whereIn('id', $request->dons)->update(['collection_id' => $collection->id]);
@@ -76,7 +149,8 @@ class CollectController extends Controller
     public function edit($id)
     {
         $collection = Collection::findOrFail($id);
-        return view('Associationspace.collection.edit', compact('collection'));    }
+        $dons = Don::all();
+        return view('Associationspace.collection.edit', compact('collection','dons'));    }
 
     /**
      * Update the specified resource in storage.

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\LivraisonAffectee;
 use App\Models\Livraison;
 use App\Models\Livreur;
+use App\Models\Redistribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,7 +18,9 @@ class LivraisonController extends Controller
      */
     public function index()
     {
-        $livraisons = Livraison::with('livreur')->get();
+        $userId = auth()->user()->id;
+
+        $livraisons = Livraison::where('user_id', $userId)->with(['livreur', 'redistribution'])->get();
         return view('Associationspace.Livraison.index', compact('livraisons'));
     }
 
@@ -57,12 +60,9 @@ class LivraisonController extends Controller
             'Zaghouan'
         ];
 
-        $distributions = [
-            ['id' => 1, 'nom' => 'Distribution Temporaire 1'],
-            ['id' => 2, 'nom' => 'Distribution Temporaire 2'],
-        ];
+        $redistributions = Redistribution::all();
 
-        return view('Associationspace.Livraison.create', compact('livreurs', 'etats', 'distributions'));
+        return view('Associationspace.Livraison.create', compact('livreurs', 'etats', 'redistributions'));
     }
 
     /**
@@ -73,13 +73,14 @@ class LivraisonController extends Controller
      */
     public function store(Request $request)
     {
+
         //
         $request->validate([
             'adresse' => 'required|string|max:255',
             'etat' => 'required|string',
             'date_livraison' => 'required|date',
             'livreur_id' => 'required|exists:livreurs,id',
-            'distribution_id' => 'nullable|exists:distributions,id',
+            'redistribution_id' => 'nullable|exists:redistributions,id'
         ]);
 
         $livraison = Livraison::create([
@@ -87,7 +88,8 @@ class LivraisonController extends Controller
             'etat' => $request->etat,
             'date_livraison' => $request->date_livraison,
             'livreur_id' => $request->livreur_id,
-            // 'distribution_id' => $request->distribution_id,
+            'user_id' => auth()->user()->id,
+            'redistribution_id' => $request->input('redistribution_id', null)
         ]);
         $livreur = $livraison->livreur;
 
@@ -154,6 +156,7 @@ class LivraisonController extends Controller
             'date_livraison' => $request->date_livraison,
             'livreur_id' => $request->livreur_id,
             'etat' => $request->etat,
+            'user_id' => auth()->user()->id
         ]);
 
         return redirect()->route('livraison.index')->with('success', 'Livraison mise à jour avec succès !');

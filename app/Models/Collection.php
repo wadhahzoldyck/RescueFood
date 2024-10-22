@@ -9,7 +9,7 @@ class Collection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['dateCollecte', 'etat','user_id'
+    protected $fillable = ['titre','dateCollecte', 'etat','user_id'
 ];
 
     protected $dates = ['dateCollecte'];
