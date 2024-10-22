@@ -82,7 +82,7 @@
                     <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"/>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item">
+                    <a class="dropdown-item" href="{{ route('profile.show') }}">
                         <i class="ti-settings text-primary"></i>
                         Settings
                     </a>

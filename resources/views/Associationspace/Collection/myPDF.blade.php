@@ -12,17 +12,24 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>Titre</th>
                 <th>Collection Date</th>
                 <th>Status</th>
+                <th>Dons Associés</th>
+
             </tr>
         </thead>
         <tbody>
             @foreach($collections as $collection)
             <tr>
-                <td>{{ $collection->id }}</td>
+                <td>{{ $collection->titre }}</td>
                 <td>{{ $collection->dateCollecte }}</td>
                 <td>{{ $collection->etat }}</td>
+                <ul>
+                    @foreach ($collection->listeDons as $don)
+                        <li>{{ $don->nourriture->nom }} - {{ $don->quantité }}</li>
+                    @endforeach
+                </ul>
             </tr>
             @endforeach
         </tbody>
