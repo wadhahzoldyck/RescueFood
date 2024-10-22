@@ -30,16 +30,47 @@
                         </div>
                     @endif
 
+                    <!-- Display validation errors -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form action="{{ route('beneficiaires.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="nom">Name</label>
-                            <input type="text" class="form-control" id="nom" name="nom" required>
+                            <input 
+                                type="text" 
+                                class="form-control @error('nom') is-invalid @enderror" 
+                                id="nom" 
+                                name="nom" 
+                                value="{{ old('nom') }}"
+                            >
+                            @error('nom')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
+                        
                         <div class="form-group">
                             <label for="contact">Contact</label>
-                            <input type="text" class="form-control" id="contact" name="contact" required>
+                            <input 
+                                type="text" 
+                                class="form-control @error('contact') is-invalid @enderror" 
+                                id="contact" 
+                                name="contact" 
+                                value="{{ old('contact') }}" 
+                            >
+                            @error('contact')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
+
                         <button type="submit" class="btn btn-primary">Create Beneficiary</button>
                         <a href="{{ route('beneficiaires.index') }}" class="btn btn-secondary">Cancel</a>
                     </form>

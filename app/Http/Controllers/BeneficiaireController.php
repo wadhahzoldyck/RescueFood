@@ -7,48 +7,62 @@ use Illuminate\Http\Request;
 
 class BeneficiaireController extends Controller
 {
-    public function __invoke(Request $request)
-    {
-        // Handle the single action here
-        return view('beneficiaires.index');
-    }
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource with search and sorting.
      *
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $beneficiaires = Beneficiaire::all();
-        return view('beneficiaires.index', compact('beneficiaires'));   
+        // Get search and sort parameters from the request
+        $search = $request->input('search');
+        $sortBy = $request->input('sort_by', 'nom'); // Default sort by 'nom'
+        $order = $request->input('order', 'asc'); // Default order is ascending
+
+        // Query with search and sort functionality
+        $beneficiaires = Beneficiaire::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('nom', 'like', '%' . $search . '%')
+                             ->orWhere('contact', 'like', '%' . $search . '%');
+            })
+            ->orderBy($sortBy, $order)
+            ->paginate(10); // Paginate results
+
+        return view('beneficiaires.index', compact('beneficiaires', 'search', 'sortBy', 'order'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
-        return view('beneficiaires.create');
+        return view('beneficiaires.create'); // Adjust according to your view structure
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage with validation.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Validate the input with custom error messages
+        $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'contact' => 'required|string|max:255',
+        ], [
+            'nom.required' => 'Le nom est obligatoire.',
+            'contact.required' => 'Le contact est obligatoire.',
         ]);
 
-        Beneficiaire::create($request->all());
+        // Create the Beneficiaire
+        Beneficiaire::create($validated);
 
-        return redirect()->route('beneficiaires.index')->with('success', 'Beneficiaire created successfully.');
+        return redirect()->route('beneficiaires.index')->with('success', 'Bénéficiaire créé avec succès.');
     }
 
     /**
@@ -74,35 +88,39 @@ class BeneficiaireController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource with validation.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Beneficiaire  $beneficiaire
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Beneficiaire $beneficiaire
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Beneficiaire $beneficiaire)
     {
-        $request->validate([
+        // Validate the input with custom error messages
+        $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'contact' => 'required|string|max:255',
+        ], [
+            'nom.required' => 'Le nom est obligatoire.',
+            'contact.required' => 'Le contact est obligatoire.',
         ]);
 
-        $beneficiaire->update($request->all());
+        // Update the Beneficiaire
+        $beneficiaire->update($validated);
 
-        return redirect()->route('beneficiaires.index')->with('success', 'Beneficiaire updated successfully.');
-    
+        return redirect()->route('beneficiaires.index')->with('success', 'Bénéficiaire mis à jour avec succès.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Beneficiaire  $beneficiaire
+     * @param \App\Models\Beneficiaire $beneficiaire
      * @return \Illuminate\Http\Response
      */
     public function destroy(Beneficiaire $beneficiaire)
     {
         $beneficiaire->delete();
 
-        return redirect()->route('beneficiaires.index')->with('success', 'Beneficiaire deleted successfully.');
+        return redirect()->route('beneficiaires.index')->with('success', 'Bénéficiaire supprimé avec succès.');
     }
 }

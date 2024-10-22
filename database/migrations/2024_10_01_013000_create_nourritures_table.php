@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->string('type');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Clé étrangère vers Nourriture
             $table->timestamps();
         });
     }

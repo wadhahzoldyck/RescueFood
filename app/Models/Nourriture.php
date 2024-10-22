@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Nourriture extends Model
 {
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     // Types de nourriture disponibles
     const TYPES_NOURRITURE = [
         'Fruits',
@@ -26,7 +30,7 @@ class Nourriture extends Model
         'Épices',
         'Plats préparés',
     ];
-    protected $fillable = ['nom', 'type'];
+    protected $fillable = ['nom', 'type','user_id'];
     public function recommandations()
     {
         return $this->hasMany(Recommandation::class);
